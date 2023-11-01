@@ -1,0 +1,43 @@
+/* You can add global styles to this file, and also import other style files */
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+:root{
+  --Lineargradient: hsl(249, 99%, 64%) to hsl(278, 94%, 30%);
+  --red-error:hsl(0, 100%, 66%);
+  --White: hsl(0, 0%, 100%);
+  --Light-grayish-violet: hsl(270, 3%, 87%);
+  --Dark-grayish-violet: hsl(279, 6%, 55%);
+  --Very-dark-violet: hsl(278, 68%, 11%);
+  font-size: 62.5%;
+}
+
+body{
+  font-family: 'Space Grotesk', sans-serif;
+  width: 100%;
+}
+
+.main{
+  width: 100%;
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: 38% 62%;
+}
+
+@media only screen and (min-width:768px){
+  .main{
+    grid-template-rows: 100%;
+    grid-template-columns: 30% 70%;
+  }
+}
+
+@media only screen and (min-width:992px){
+  .main{
+    grid-template-rows: 100%;
+    grid-template-columns: 25% 75%;
+  }
+}

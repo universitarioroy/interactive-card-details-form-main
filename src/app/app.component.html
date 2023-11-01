@@ -1,0 +1,48 @@
+<section class="top">
+  <div class="top__card">
+    <form class="top__form">
+      <input type="text" value="000" class="top__input" disabled>
+    </form>
+  </div>
+</section>
+<section class="bottom">
+  <div class="bottom__card">
+    <div class="bottom__card--img-logo"></div>
+    <div class="bottom__card--dates">
+      <h1 class="bottom__card--title">{{cardnumber}}</h1>
+      <span class="bottom__card--user">Jane Appleseed</span>
+      <span class="bottom__card--date">00/00</span>
+    </div>
+  </div>
+  <form class="bottom__form">
+    <div>
+      <label for="cardName" class="label bottom__form--labelcardname">Cardholder Name
+      </label>
+      <input name="cardName" id="cardName" type="text" class="input bottom__form--inputcardname" placeholder="e.g. Jane Appleseed">
+    </div>
+
+    <div>
+      <label for="cardNumber"  class="label bottom__form--labelcardnumber">Card Number
+      </label>
+      <input type="text" name="cardNumber" [(ngModel)]="cardnumber" id="cardNumber" class="input bottom__form--inputcardnumber" placeholder="e.g. 1234 5678 9123 0000">
+    </div>
+    <div class="bottom__form--datescard">
+      <div>
+        <label for="month" class="label bottom__form--labelmonth">Exp. Date (MM/YY)
+        </label>
+        <input type="text" name="month" id="month" class="input bottom__form--inputmonth" placeholder="MM">
+        <input type="text" name="year"  id="year" class="input bottom__form--inputyear" placeholder="YY">
+      </div>
+
+      <div>
+        <label for="cvc" class="label bottom__form--labelcvc">CVC</label>
+        <input type="text" name="cvc" id="cvc" class="input bottom__form--inputcvc" placeholder="e.g. 123">
+      </div>
+    </div>
+
+
+
+    <button name="enviar" class="btn bottom__form--labelbtn">Confirm</button>
+  </form>
+</section>
+
