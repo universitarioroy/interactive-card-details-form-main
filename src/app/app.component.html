@@ -1,7 +1,7 @@
 <section class="top">
   <div class="top__card">
     <form class="top__form">
-      <input type="text" value="000" class="top__input" disabled>
+      <span class="top__input">{{cvc | cvc}}</span>
     </form>
   </div>
 </section>
@@ -9,40 +9,66 @@
   <div class="bottom__card">
     <div class="bottom__card--img-logo"></div>
     <div class="bottom__card--dates">
-      <h1 class="bottom__card--title">{{cardnumber}}</h1>
-      <span class="bottom__card--user">Jane Appleseed</span>
-      <span class="bottom__card--date">00/00</span>
+      <h1 class="bottom__card--title">{{cardnumber | numbercard}}</h1>
+      <span class="bottom__card--user">{{name | name}}</span>
+      <span class="bottom__card--date">{{month | month}}/{{year | year}}</span>
     </div>
   </div>
-  <form class="bottom__form">
+  <form *ngIf="!sumnitForm; else successForm" class="bottom__form"  #validform="ngForm" (ngSubmit)="onSubmit()">
     <div>
       <label for="cardName" class="label bottom__form--labelcardname">Cardholder Name
       </label>
-      <input name="cardName" id="cardName" type="text" class="input bottom__form--inputcardname" placeholder="e.g. Jane Appleseed">
-    </div>
+      <input name="cardName" [class.borderError]="emptyname.invalid && emptyname.dirty"  id="cardName" type="text" class="input bottom__form--inputcardname" placeholder="e.g. Jane Appleseed" [(ngModel)]="name"  maxlength="31" required="required" #emptyname="ngModel" appOnlyletter>
+      <p class="errormessage" *ngIf="validform.controls['cardName']?.hasError('required') && emptyname.dirty">is empty</p>
+      <p class="errormessage" *ngIf="emptyname.errors?.['containsNumbers'] && emptyname.dirty ">only letter</p>
 
+
+    </div>
     <div>
       <label for="cardNumber"  class="label bottom__form--labelcardnumber">Card Number
       </label>
-      <input type="text" name="cardNumber" [(ngModel)]="cardnumber" id="cardNumber" class="input bottom__form--inputcardnumber" placeholder="e.g. 1234 5678 9123 0000">
+      <input type="text" required="required" [class.borderError]="emptynumbercard.invalid && emptynumbercard.dirty" name="cardNumber" [(ngModel)]="cardnumber" mask="0000 0000 0000 0000" id="cardNumber" class="input bottom__form--inputcardnumber" placeholder="e.g. 1234 5678 9123 0000" #emptynumbercard="ngModel">
+      <p class="errormessage" *ngIf="validform.controls['cardNumber']?.hasError('required') && emptynumbercard.dirty">is empty</p>
+      <p class="errormessage" *ngIf="cardnumber.length!==16 &&!validform.controls['cardNumber']?.hasError('required') && emptynumbercard.dirty">must 16 digits</p>
     </div>
+
     <div class="bottom__form--datescard">
-      <div>
+      <div class="bottom__form--datescardhalf">
         <label for="month" class="label bottom__form--labelmonth">Exp. Date (MM/YY)
         </label>
-        <input type="text" name="month" id="month" class="input bottom__form--inputmonth" placeholder="MM">
-        <input type="text" name="year"  id="year" class="input bottom__form--inputyear" placeholder="YY">
+        <div class="bottom__form--month">
+          <input type="text" required="required" [class.borderError]="emptymonth.invalid && emptymonth.dirty" name="month" id="month" class="input bottom__form--inputmonth" placeholder="MM" [(ngModel)]="month" mask="00" #emptymonth="ngModel" appMonthvalid>
+          <p class="errormessage" *ngIf="validform.controls['month']?.hasError('required') && emptymonth.dirty ">is empty</p>
+          <p class="errormessage" *ngIf="emptymonth.errors?.['validMonth'] && emptymonth.dirty ">range 01 to 12</p>
+          <p class="errormessage" *ngIf="month.length!==2 && !validform.controls['month']?.hasError('required') && emptymonth.dirty ">must 2 digits</p>
+        </div>
+        <div class="bottom__form--year">
+          <input type="text" required="required" [class.borderError]="emptyear.invalid && emptyear.dirty"  name="year"  id="year" class="input bottom__form--inputyear" placeholder="YY" [(ngModel)]="year" mask="00" #emptyear="ngModel">
+          <p class="errormessage" *ngIf="validform.controls['year']?.hasError('required') && emptyear.dirty">is empty</p>
+          <p class="errormessage" *ngIf="year.length!==2 && !validform.controls['year']?.hasError('required') && emptyear.dirty">must 2 digits</p>
+        </div>
       </div>
 
-      <div>
-        <label for="cvc" class="label bottom__form--labelcvc">CVC</label>
-        <input type="text" name="cvc" id="cvc" class="input bottom__form--inputcvc" placeholder="e.g. 123">
+      <div class="bottom__form--datescvc">
+        <label for="cvc"  class="label bottom__form--labelcvc">CVC</label>
+        <input type="text" required="required" [class.borderError]="emptycvc.invalid && emptycvc.dirty" name="cvc" id="cvc" class="input bottom__form--inputcvc" placeholder="e.g. 123" [(ngModel)]="cvc" mask="000"  #emptycvc="ngModel">
+        <p class="errormessage" *ngIf="validform.controls['cvc']?.hasError('required') && emptycvc.dirty">is empty</p>
+        <p class="errormessage" *ngIf="cvc.length!==3 && !validform.controls['cvc']?.hasError('required')  && emptycvc.dirty">must 3 digits</p>
       </div>
     </div>
 
-
-
-    <button name="enviar" class="btn bottom__form--labelbtn">Confirm</button>
+    <button [disabled]="validform.invalid " [ngClass]="{'errorForm':validform.invalid } " name="enviar" type="submit" class="btn bottom__form--labelbtn">Confirm</button>
   </form>
+  <ng-template #successForm>
+    <form class="bottom__form"  (ngSubmit)="onSubmit()">
+      <div class="bottom__form--success">
+      </div>
+      <h2 class="bottom__form--title">Thank you!</h2>
+      <p class="bottom__form--description">We've added your card details</p>
+
+
+      <button name="enviar" type="button" class="btn bottom__form--labelbtn">Siguiente</button>
+    </form>
+  </ng-template>
 </section>
 

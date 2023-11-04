@@ -7,6 +7,17 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'interactive-card-details-form-main';
+  name='';
+  cardnumber='';
+  month='';
+  year='';
+  cvc='';
 
-  cardnumber='0000 0000 0000 0000';
+  btnstate:boolean=true;
+  sumnitForm:boolean=false;
+
+
+  onSubmit(){
+    this.sumnitForm=true;
+  }
 }
